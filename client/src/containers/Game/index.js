@@ -9,7 +9,7 @@ class Game extends Component {
 		super(props);
 
 		this.gridSize = 20;
-		this.snake = new Snake(this.gridSize, { x: this.gridSize - 1, y: 0 });
+		this.snake = new Snake(this.gridSize, { x: this.gridSize - 1, y: 0 }, RIGHT);
 		this.state = {
 			direction: RIGHT,
 		};

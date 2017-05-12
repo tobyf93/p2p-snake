@@ -7,12 +7,12 @@ class Segment {
 		this.position = position;
 	}
 
-	move(direction) {
+	move() {
 		if (this.parentSegment) this.position = this.parentSegment.position;
 		else {
 			let { x, y } = this.position;
 
-			switch (direction) {
+			switch (this.snake.direction) {
 				case UP:
 					y--;
 					break;
@@ -39,7 +39,7 @@ class Segment {
 }
 
 class Snake {
-	constructor(gridSize, position) {
+	constructor(gridSize, position, direction) {
 		const { x, y } = position;
 		const segment1 = new Segment(this, null, position);
 		const segment2 = new Segment(this, segment1, { x: x - 1, y });
@@ -48,11 +48,22 @@ class Snake {
 		const segment5 = new Segment(this, segment4, { x: x - 4, y });
 
 		this.gridSize = gridSize;
+		this.direction = direction;
 		this.segments = [segment5, segment4, segment3, segment2, segment1];
 	}
 
 	move(direction) {
-		this.segments.forEach(segment => segment.move(direction));
+		const oppositeDirections = {};
+		oppositeDirections[UP] = DOWN;
+		oppositeDirections[RIGHT] = LEFT;
+		oppositeDirections[DOWN] = UP;
+		oppositeDirections[LEFT] = RIGHT;
+
+		if (oppositeDirections[direction] !== this.direction) {
+			this.direction = direction;
+		}
+
+		this.segments.forEach(segment => segment.move());
 	}
 
 	length() {
