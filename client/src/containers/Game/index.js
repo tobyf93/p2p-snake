@@ -10,11 +10,11 @@ class Game extends Component {
 		super(props);
 
 		this.gridSize = 20;
-		this.food = new Food({ x: 0, y: 0 });
+		this.food = new Food({ x: 10, y: 10 });
 		this.snake = new Snake(
 			this.gridSize,
 			this.food,
-			{ x: this.gridSize - 1, y: 0 },
+			{ x: 0, y: 0 },
 			RIGHT,
 		);
 		this.state = {
