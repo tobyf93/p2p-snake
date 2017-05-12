@@ -12,8 +12,14 @@ class Grid extends Component {
 		const rows = this.grid.map((row, y) => {
 			const columns = this.grid.map((column, x) => {
 				let style = {};
-				if (x === this.props.x && y === this.props.y) {
-					style = { backgroundColor: 'green' };
+
+				for (let i = 0; i < this.props.snake.length(); i++) {
+					const segmentPosition = this.props.snake.segment(i).position;
+
+					if (segmentPosition.x === x && segmentPosition.y === y) {
+						style = { backgroundColor: 'green' };
+						break;
+					}
 				}
 
 				return (
