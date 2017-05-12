@@ -9,15 +9,26 @@ class Grid extends Component {
 	}
 
 	render() {
+		const baseStyle = {
+			backgroundSize: 'contain',
+			backgroundPosition: 'center',
+			backgroundRepeat: 'no-repeat',
+		};
+
 		const rows = this.grid.map((row, y) => {
 			const columns = this.grid.map((column, x) => {
-				let style = {};
+				let style = { ...baseStyle };
+
+				const foodPosition = this.props.food.position;
+				if (foodPosition.x === x && foodPosition.y === y) {
+					style = { ...style, backgroundImage: 'url(poo.png)' };
+				}
 
 				for (let i = 0; i < this.props.snake.length(); i++) {
 					const segmentPosition = this.props.snake.segment(i).position;
 
 					if (segmentPosition.x === x && segmentPosition.y === y) {
-						style = { backgroundColor: 'green' };
+						style = { ...style, backgroundColor: 'green' };
 						break;
 					}
 				}

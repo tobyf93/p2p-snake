@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Grid from '../../components/Grid';
 import Snake from './_snake';
+import Food from './_food';
 import { UP, RIGHT, DOWN, LEFT } from './_constants';
 import styles from '../../assets/stylesheets/game.scss';
 
@@ -9,7 +10,13 @@ class Game extends Component {
 		super(props);
 
 		this.gridSize = 20;
-		this.snake = new Snake(this.gridSize, { x: this.gridSize - 1, y: 0 }, RIGHT);
+		this.food = new Food({ x: 0, y: 0 });
+		this.snake = new Snake(
+			this.gridSize,
+			this.food,
+			{ x: this.gridSize - 1, y: 0 },
+			RIGHT,
+		);
 		this.state = {
 			direction: RIGHT,
 		};
@@ -45,7 +52,7 @@ class Game extends Component {
 	render() {
 		return (
 			<div className={styles.root}>
-				<Grid gridSize={this.gridSize} snake={this.snake} />
+				<Grid gridSize={this.gridSize} snake={this.snake} food={this.food} />
 			</div>
 		);
 	}
