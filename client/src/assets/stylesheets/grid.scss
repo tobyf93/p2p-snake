@@ -1,0 +1,23 @@
+.root {
+	display: flex;
+	flex-direction: column;
+	// border: 1px solid black;
+	height: 90vh;
+	width: 90vh;
+}
+
+.row {
+	display: flex;
+	flex: 1;
+}
+
+.cell {
+	flex: 1;
+	padding: 2px;
+
+	.inner {
+		height: 0;
+		padding-bottom: 100%;
+		border: 1px solid black;
+	}
+}
