@@ -5,8 +5,7 @@ class Grid extends Component {
 	constructor(props) {
 		super(props);
 
-		const gridSize = 20;
-		this.grid = new Array(gridSize).fill(undefined);
+		this.grid = new Array(props.gridSize).fill(undefined);
 	}
 
 	render() {
