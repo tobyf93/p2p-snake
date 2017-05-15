@@ -1,4 +1,5 @@
-import { UP, RIGHT, DOWN, LEFT } from './_constants';
+import { GRID_SIZE, UP, RIGHT, DOWN, LEFT } from './_constants';
+import Food from './_food';
 
 class Segment {
 	constructor(snake, parentSegment, position) {
@@ -28,24 +29,24 @@ class Segment {
 				default:
 			}
 
-			if (x < 0) x = this.snake.gridSize - 1;
-			else if (x >= this.snake.gridSize) x = 0;
-			else if (y < 0) y = this.snake.gridSize - 1;
-			else if (y >= this.snake.gridSize) y = 0;
+			if (x < 0) x = GRID_SIZE - 1;
+			else if (x >= GRID_SIZE) x = 0;
+			else if (y < 0) y = GRID_SIZE - 1;
+			else if (y >= GRID_SIZE) y = 0;
 
-			const foodPosition = this.snake.food.position;
-			if (foodPosition.x === x && foodPosition.y === y) {
-				const gridSize = this.snake.gridSize;
-				const newSegment = new Segment(this.snake, null, { x, y });
+			// TODO: Maybe some of this logic belongs in Food class...
+			for (let i = 0; i < this.snake.food.length; i++) {
+				const food = this.snake.food[i];
 
-				this.snake.segments.push(newSegment);
-				this.parentSegment = newSegment;
-				this.snake.food.position = {
-					x: Math.round(Math.random() * (gridSize - 1)),
-					y: Math.round(Math.random() * (gridSize - 1)),
-				};
-			} else {
-				this.position = { x, y };
+				if (food.position.x === x && food.position.y === y) {
+					const newSegment = new Segment(this.snake, null, { x, y });
+
+					this.snake.segments.push(newSegment);
+					this.parentSegment = newSegment;
+					food.eat();
+				} else {
+					this.position = { x, y };
+				}
 			}
 		}
 
@@ -54,19 +55,21 @@ class Segment {
 }
 
 class Snake {
-	constructor(gridSize, food, position, direction) {
-		this.gridSize = gridSize;
-		this.food = food;
+	constructor(position, direction = RIGHT) {
+		this.food = [new Food(this), new Food(this, true)];
+		this.bonus = false;
+		this.score = 0;
 		this.segments = [new Segment(this, null, position)];
 		this.direction = direction;
 	}
 
 	move(direction) {
-		const oppositeDirections = {};
-		oppositeDirections[UP] = DOWN;
-		oppositeDirections[RIGHT] = LEFT;
-		oppositeDirections[DOWN] = UP;
-		oppositeDirections[LEFT] = RIGHT;
+		const oppositeDirections = {
+			[UP]: DOWN,
+			[RIGHT]: LEFT,
+			[DOWN]: UP,
+			[LEFT]: RIGHT,
+		};
 
 		if (oppositeDirections[direction] !== this.direction) {
 			this.direction = direction;

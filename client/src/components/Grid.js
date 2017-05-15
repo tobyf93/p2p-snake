@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import { GRID_SIZE } from '../containers/Game/_constants';
 import styles from '../assets/stylesheets/grid.scss';
 
 class Grid extends Component {
 	constructor(props) {
 		super(props);
 
-		this.grid = new Array(props.gridSize).fill(undefined);
+		this.grid = new Array(GRID_SIZE).fill(undefined);
 	}
 
 	render() {
@@ -19,10 +20,18 @@ class Grid extends Component {
 			const columns = this.grid.map((column, x) => {
 				let style = { ...baseStyle };
 
-				const foodPosition = this.props.food.position;
-				if (foodPosition.x === x && foodPosition.y === y) {
-					style = { ...style, backgroundImage: 'url(poo.png)' };
-				}
+				this.props.snake.food.forEach((food) => {
+					if (!this.props.snake.bonus && food.special) {
+						return;
+					}
+
+					if (food.position.x === x && food.position.y === y) {
+						let image = 'poo.png';
+						if (food.special) image = 'star.gif';
+
+						style = { ...style, backgroundImage: `url(${image})` };
+					}
+				});
 
 				for (let i = 0; i < this.props.snake.length(); i++) {
 					const segmentPosition = this.props.snake.segment(i).position;
